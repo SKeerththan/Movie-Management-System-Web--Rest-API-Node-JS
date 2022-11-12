@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,default-src">
+    <title>JavaScript | fetch() Method</title>
+</head>
+
+<body>
+
+    <!-- Get all  by id-->
+    <button onclick="getAllByIDFunction()">Get All by id</button>
+    <script>
+        // API for get requests
+        function getAllByIDFunction() {
+
+            function fetchGet() {
+                // (A) DATA TO SEND
+                var data = {
+
+                    mid: 1
+                };
+
+                // (B) BUILD URL
+                var url = new URL("http://127.0.0.1:9000/api/mid/");
+                for (let k in data) {
+                    url.searchParams.append(k, data[k]);
+                }
+                console.log(url);
+
+                // (C) FETCH WITH GET SEARCH PARAMS
+                fetch(url)
+
+                    // (D) RETURN SERVER RESPONSE AS TEXT
+                    .then((result) => {
+                        console.log(result);
+                        if (result.status != 200) { throw new Error("Bad Server Response"); }
+                        return result.text();
+                    })
+                    .then((response) => {
+                        console.log(response);
+                    })
+
+                    // (E) HANDLE ERRORS (OPTIONAL)
+                    .catch((error) => { console.log(error); });
+            }
+        }
+
+    </script>
+
+
+
+
+
+
+
+    <!-- Get all -->
+    <button onclick="getAllFunction()">Get All </button>
+    <script>
+        // API for get requests
+        function getAllFunction() {
+            let fetchRes = fetch("http://127.0.0.1:9000/api/movie");
+            fetchRes.then(res =>
+                res.json()).then(d => {
+                    console.log(d)
+
+                    for (var i = 0; d.response.length > i; i++) {
+                        document.getElementById("showData").innerHTML += d.response[i].MID;
+                    }
+
+
+                })
+        }
+
+    </script>
+
+
+
+
+
+
+
+    <!-- Post all -->
+    <button onclick="postFunction()">Post </button>
+
+    <Script>
+
+
+        function postFunction() {
+            let x = {
+                "MID": "3",
+                "Title": "can",
+                "Year": 55,
+                "Runtime": 55,
+                "Genre": ["ffff", "ssss", "ffff", "ssss"],
+                "Director": "dd",
+                "Writer": "dd",
+                "Actors": ["ffff", "ssss", "ffff", "ssss"],
+                "Metascore": 96,
+                "imdbRating": 855
+            }
+
+            fetch("http://127.0.0.1:9000/api/movie/", {
+
+
+                method: "POST",
+                body: JSON.stringify(x),
+                headers: {
+                    'Content-Type': 'application/JSON'
+                },
+            }).then(function (response) {
+
+
+                return response.text();
+            }).then(function (text) {
+                console.log(text);
+
+
+            }).catch(function (error) {
+                console.log(error);
+            })
+        }
+
+    </Script>
+
+
+    <br>
+
+
+    <div id="showData">
+        <h1>Show data</h1>
+    </div>
+
+
+    </div>
+
+
+
+</body>
+
+</html>
